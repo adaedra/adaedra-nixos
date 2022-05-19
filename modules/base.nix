@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ name }: { pkgs, ... }: {
     nix.package = pkgs.nixFlakes;
     nix.extraOptions = ''
         experimental-features = nix-command flakes
@@ -24,6 +24,8 @@
     services.openssh.extraConfig = ''
         ClientAliveInterval 60
     '';
+
+    networking.hostName = name;
     networking.firewall.enable = false;
 
     programs.neovim.enable = true;

@@ -1,18 +1,27 @@
 {
-    inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "nixpkgs";
+  inputs.home-manager.url = github:nix-community/home-manager;
 
-    outputs = { self, nixpkgs }: {
-        lib = {
-            pair = name: value: builtins.listToAttrs [{
-                inherit name;
-                inherit value;
-            }];
-        };
-        modules = {
-            common = import ./common.nix;
-            user = { name, ... }@overrides: { ... }: {
-              users.users = (lib.pair name ((import ./user.nix) // overrides));
-            };
-        };
+  outputs = { self, nixpkgs, home-manager }:
+  let
+    modules = {
+      base = import ./modules/base.nix;
+      user = import ./modules/user.nix;
     };
+    root = {
+      inherit home-manager;
+
+      adaedra = { inherit modules; };
+    };
+
+    genHost = { name, modules }:
+    nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = (modules root);
+    };
+  in {
+    lib = {
+      inherit genHost;
+    };
+  };
 }

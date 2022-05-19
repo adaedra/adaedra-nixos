@@ -41,4 +41,6 @@
             start = [ vim-nix ];
 	};
     };
+
+    programs.htop.enable = true;
 }

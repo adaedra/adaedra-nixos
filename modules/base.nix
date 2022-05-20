@@ -1,4 +1,6 @@
 { name }: { pkgs, ... }: {
+    system.stateVersion = "21.11";
+
     nix.package = pkgs.nixFlakes;
     nix.extraOptions = ''
         experimental-features = nix-command flakes

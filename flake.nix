@@ -31,5 +31,10 @@
           (builtins.attrNames hosts)
         );
     };
+
+    defaultTemplate = {
+      path = ./template;
+      description = "Template for setuping a machine using this repository";
+    };
   };
 }
